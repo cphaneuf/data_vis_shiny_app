@@ -1,11 +1,12 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+#######################################################
+### Shiny App for Simple, Exploratory Data Analysis ###
+#######################################################
+
+# Developer: Camille Phaneuf (cphaneuf@umich.edu)
+# Last updated: 12/27/21
+
+# Run Shiny web application by clicking the 'Run App' button above.
+# For more information: http://shiny.rstudio.com/
 
 library(shiny)
 
