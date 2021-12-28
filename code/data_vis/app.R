@@ -3,7 +3,7 @@
 #######################################################
 
 # Developer: Camille Phaneuf (cphaneuf@umich.edu)
-# Last updated: 12/27/21
+# Last updated: 12/28/21
 
 # Run Shiny web application by clicking the 'Run App' button above.
 # For more information: http://shiny.rstudio.com/
@@ -59,7 +59,7 @@ ui <- fluidPage(
     selectInput('x_var', 'Select x', names(data), 'age'),
     selectInput('y_var', 'Select y', names(data), 'task_1'),
     #numericInput('something', 'Somthing', 3),
-    #plotOutput("func")
+    plotOutput("func")
 )
 
 # Define server logic required to draw a histogram
@@ -87,7 +87,9 @@ server <- function(input, output) {
     })
     
     output$func <- renderPlot({
-        plot(x_var, y_var)
+        xcol <- input$x_var
+        ycol <- input$y_var
+        plot(data[, xcol], data[, ycol], xlim = c(0, 40), ylim = c(8,22), type = "p")
     })
 }
 
