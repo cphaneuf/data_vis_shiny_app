@@ -24,7 +24,31 @@ library(ggplot2)
 ### Initialize Global Variables ###
 ###################################
 
-# Plot colors
+# Plot colors and theme
+andl_red <- "#DD292A"
+andl_burgundy <- "#970505"
+andl_pink <- "#F59596"
+andl_orange <- "#FF871E"
+color_scheme <- scale_color_manual(values = c(andl_red, andl_burgundy, 
+                                              andl_pink, andl_orange))
+plot.theme <- theme(title = element_text(size = 18, vjust = 2, face = "bold"),
+                              plot.title = element_text(hjust = .5), # center plot title (where applicable)
+                              axis.title.x = element_text(size = 18, vjust = -0.5),
+                              axis.title.y = element_text(size = 18, vjust = 1.5),
+                              axis.text.x = element_text(size = 12, colour = "black", vjust = -0.5),
+                              axis.text.y = element_text(size = 12, colour = "black"),
+                              legend.title = element_blank(), # removes legend title
+                              legend.text = element_text(size = 12),
+                              legend.position = "bottom",
+                              legend.key = element_rect(fill = "transparent", colour = NA),
+                              strip.background = element_rect(fill = "grey90"),
+                              strip.text.x = element_text(size = 12, colour = "black"), # format vertical facet header text (where applicable)
+                              strip.text.y = element_text(size = 12, colour = "black"), # format horizontal facet header text (where applicable)
+                              # text = element_text(family = "Ubuntu"),
+                              panel.grid.major = element_blank(),
+                              panel.grid.minor = element_blank(),
+                              panel.background = element_blank(), 
+                              axis.line = element_line(colour = "black"))
 
 # Choice options
 none_selected <- 'none selected'
@@ -48,8 +72,9 @@ about_page <- tabPanel(
     titlePanel("About"),
     "This browser-based application allows users to examine relationships among specified variables of interest from a dataset of their choosing. It was developed by Camille Phaneuf in the Affective Neuroscience and Development Lab at Harvard University.",
     # br(),
-    # FIX THIS TO BE A HYPERLINK
-    "Thank you to github user @MatePocs for their tremendous Shiny App resource (https://github.com/MatePocs/rshiny_apps), upon which much of this was built.",
+    "Thank you to Github user @MatePocs for their ", 
+        tags$a(href = "https://github.com/MatePocs/rshiny_apps", "tremendous Shiny App resource"),
+        ", upon which much of this was built.",
     imageOutput("lab_logo")
 )
 
@@ -141,10 +166,15 @@ server <- function(input, output) {
 
     # Histogram for continuous numeric variables
     hist <- eventReactive(input$run_button,{
-        # FIX PLOT AESTHETICS
-        ggplot(data = data_input(),
-               aes_string(x = con_num_var())) +
-            geom_histogram(bins = 5) # FIX THIS BY MAKING BIN NUMBER DYNAMIC
+        df = data_input()
+        var = con_num_var()
+        num_bins <- length(df[[1]]) / 5
+        mean_var <- mean(df[[var]])
+        ggplot(data = df,
+               aes_string(x = var)) +
+            geom_histogram(bins = num_bins, color = andl_burgundy, fill = andl_pink) +
+            geom_vline(aes(xintercept = mean_var), color = andl_burgundy, linetype = "dashed", size = 1) +
+            plot.theme
     })
     output$hist <- renderPlot(hist())
 }
@@ -159,3 +189,4 @@ shinyApp(ui = ui, server = server)
 # https://stackoverflow.com/questions/50218614/shiny-selectinput-to-select-all-from-dropdown
 # https://shiny.rstudio.com/articles/layout-guide.html
 # https://rstudio.github.io/shinythemes/
+# http://www.sthda.com/english/wiki/ggplot2-histogram-plot-quick-start-guide-r-software-and-data-visualization
