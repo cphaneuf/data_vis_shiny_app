@@ -3,4 +3,4 @@
 ## Shiny App for Simple, Exploratory Data Analysis
 
 ### Content
-This repo is under active development as of 12/28/21.
+This repo is under active development as of January 2022.
